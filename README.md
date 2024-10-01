@@ -2,8 +2,7 @@
 This is complete guide (in progress...) for creating LLMs ready for production, including connecting to llm APIs, good prompting tecniques, langchain, lama-index, OpenAI assistants, managing outputs (output parser), knowledge graphs, RAG, indexes & retrievers, data ingestion, retrievers, embeddings, chains, fine-tunning, metrics, autogpt and deployment.
 
 - [Installation](#installation)
-- [Usage](#usage)
-- [Features](#features)
+- [Usage](#jupyter-notebook-lessons)
 
 ## Installation
 
@@ -23,6 +22,7 @@ This is complete guide (in progress...) for creating LLMs ready for production, 
     OPENAI_API_KEY = "<PASTE_YOUR_OPENAI_API_KEY>"
 
 
-## Jupyter notebook lessons
+## Jupyter Notebook Lessons
 
-1. introduction-to-prompting: Lessons on how to connect to API, prompting tecniques and good & bad prompting
+1. **[Introduction to Prompting:](jupyter-notebooks/1-introduction-to-prompting.ipynb)introduction-to-prompting:** Lessons on how to connect to API, prompting tecniques and good & bad prompting
+2. **[Introduction to LangChain and Llama Index:](jupyter-notebooks/2-introduction-to-langchain-and-llama-index.ipynb):** ...
