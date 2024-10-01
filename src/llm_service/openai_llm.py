@@ -2,29 +2,52 @@
 LLM Script Oriented to using OpenAI structure
 """
 
-from openai import OpenAI
+from langchain_core.prompts.few_shot import FewShotPromptTemplate
+from langchain_core.prompts.prompt import PromptTemplate
+from langchain_openai import ChatOpenAI
 
-client = OpenAI()
+# Initialize LLM
+MODEL = 'gpt-4o-mini'
+llm = ChatOpenAI(model_name= MODEL, temperature= 0)
 
-MODEL = "gpt-4o-mini"
+examples = [
+    {"color": "red", "emotion": "passion"},
+    {"color": "blue", "emotion": "serenity"},
+    {"color": "green", "emotion": "tranquility"},
+]
 
-TOPIC = "soul"
-
-PROMPT_SYSTEM = "You are a helpfull assistant whose goal is to help write stories."
-PROMPT = """
-Continue the following story. Write no more than 50 words.
-
-Once upon a time, in a world where animals could speak, a courageous mouse named
-Benjamin decided to
+example_formatter_template = """
+Color: {color}
+Emotion: {emotion}
 """
 
-response_parameters = {"model": MODEL,
-                       "messages": [
-                           {"role": "system", "content": PROMPT_SYSTEM},
-                           {"role": "user", "content": PROMPT}],
-                        "temperature": 0
-                        }
+example_prompt = PromptTemplate(
+    input_variables=["color", "emotion"],
+    template=example_formatter_template,
+)
 
-response = client.chat.completions.create(**response_parameters)
+few_shot_prompt = FewShotPromptTemplate(
+    examples=examples,
+    example_prompt=example_prompt,
+    prefix="""Here are some examples of colors and the emotions associated with \
+them:""",
+    suffix="""Now, given a new color, identify the emotion associated with \
+it:\nColor: {input}\nEmotion:""",
+    input_variables=["input"],
+    example_separator="\n",
+)
 
-print(response.choices[0].message.content)
+formatted_prompt = few_shot_prompt.format(input="purple")
+prompt=PromptTemplate(template=formatted_prompt, input_variables=[])
+
+# Create the LLMChain for the prompt
+chain = prompt | llm
+
+# Run the LLMChain to get the AI-generated emotion associated with the input
+# color
+response = chain.invoke({})
+
+# We print the example of the prompt sent
+print("Input: 'Color: purple'")
+print("Output: 'Emotion:", f"{response.content}'")
+print(f"\nPrompt:\n\n{prompt.template}")
