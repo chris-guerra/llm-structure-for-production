@@ -1,6 +1,7 @@
 """
 LLM Script Oriented to using OpenAI structure
 """
+
 import os
 from dotenv import load_dotenv
 
